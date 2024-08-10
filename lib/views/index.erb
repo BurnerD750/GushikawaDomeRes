@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>予約結果</title>
+    <!-- Bootstrap CSS の読み込み -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <!-- カスタムCSS の読み込み -->
+    <link href="custom.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container mt-5">
+        <section class="reservation-section">
+            <h2 class="reservation-title text-center mb-4">予約結果</h2>
+            <% @grouped_results.each do |date, courts| %>
+                <div class="mb-4">
+                    <h5 class="reservation-date text-primary"><strong><%= date %></strong></h5>
+                    <% courts.each do |court, times| %>
+                        <div class="card mb-3">
+                            <div class="card-body">
+                                <h6 class="card-title"><strong><%= court %></strong></h6>
+                                <div class="time-scale-container d-flex justify-content-between mb-3">
+                                    <% (9..22).each do |hour| %>
+                                        <div class="text-center flex-fill">
+                                            <div class="vertical-line"></div>
+                                            <small class="text-muted"><%= "#{hour}:00" %></small>
+                                        </div>
+                                    <% end %>
+                                </div>
+                                <div class="position-relative" style="height: 20px; background-color: #e0e0e0;">
+                                    <% times.each do |time| %>
+                                        <% start_time, end_time = time.split(" - ") %>
+                                        <% start_hour, _ = start_time.split(":").map(&:to_i) %>
+                                        <% end_hour, _ = end_time.split(":").map(&:to_i) %>
+                                        <% start_hour = [start_hour, 8].max %>
+                                        <% end_hour = [end_hour, 23].min %>
+                                        <% left_percent = ((start_hour - 8) * 100.0) / 15 %>
+                                        <% width_percent = ((end_hour - start_hour) * 100.0) / 15 %>
+                                        <div class="position-absolute time-bar" style="left: <%= left_percent %>%; width: <%= width_percent %>%; height: 100%;"></div>
+                                    <% end %>
+                                </div>
+                            </div>
+                        </div>
+                    <% end %>
+                </div>
+            <% end %>
+        </section>
+    </div>
+
+    <!-- BootstrapのJavaScript（オプション） -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

@@ -1,0 +1,18 @@
+/* custom.css */
+.reservation-title {
+    font-size: 28px;
+    color: #4a90e2;
+}
+
+.reservation-date {
+    font-size: 20px;
+    color: #34495e;
+}
+
+.time-scale-container {
+    border-top: 2px solid #3498db;
+}
+
+.time-bar {
+    background-color: #e74c3c !important; /* バーの色を赤に変更 */
+}
